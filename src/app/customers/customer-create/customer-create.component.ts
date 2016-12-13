@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CustomerRepositoryService} from "../customer-repository.service";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators, FormArray} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
@@ -20,7 +20,8 @@ export class CustomerCreateComponent implements OnInit {
     this.customerForm = this._fb.group({
       'firstName': this._fb.control(this.customer?this.customer.firstName:'', Validators.required),
       'lastName': this._fb.control(this.customer?this.customer.lastName:'', Validators.required),
-      'email': this._fb.control(this.customer?this.customer.email:'', Validators.required)
+      'email': this._fb.control(this.customer?this.customer.email:'', Validators.required),
+      'contactNumbers': this._fb.array([this.createContactFormGroup()])
     });
   }
 
@@ -34,5 +35,23 @@ export class CustomerCreateComponent implements OnInit {
           }
         }
     );
+  }
+
+  addContactNumberFormGroup(){
+    (<FormArray>this.customerForm.get('contactNumbers')).push(
+        this.createContactFormGroup()
+    );
+  }
+
+  createContactFormGroup(){
+    return this._fb.group({
+      'number': this._fb.control('', Validators.required),
+      'type': this._fb.control('', Validators.required)
+    });
+  }
+
+  removeContactNumber(n){
+    let controls = <FormArray>this.customerForm.get('contactNumbers');
+    controls.removeAt(n);
   }
 }
