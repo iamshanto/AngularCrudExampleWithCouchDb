@@ -6,6 +6,7 @@ import {CustomerViewComponent} from "./customers/customer-view/customer-view.com
 const APP_ROUTE_MAP:Routes = [
     {path: '', component: CustomersComponent},
     {path: 'customer/create', component: CustomerCreateComponent},
+    {path: 'customer/edit/:id', component: CustomerCreateComponent},
     {path: 'customer/view/:id', component: CustomerViewComponent}
 ];
 

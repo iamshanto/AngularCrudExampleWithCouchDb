@@ -12,10 +12,16 @@ export class DbService {
   }
 
   save(obj){
-    if (!obj.id) {
+    let url = this.endpoint;
+    if (obj.id) {
+      url = url + obj.id + '?rev=' + obj.rev;
+      delete obj.id;
+      delete obj.rev;
+      return this._http.put(url, obj);
+    } else {
       obj.id = this.guid();
+      return this._http.post(url, obj);
     }
-    return this._http.post(this.endpoint, obj);
   }
 
   getAll(){

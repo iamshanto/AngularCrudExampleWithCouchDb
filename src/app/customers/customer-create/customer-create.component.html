@@ -1,5 +1,5 @@
 <div class="panel panel-primary">
-  <div class="panel-heading">Create a Customer</div>
+  <div class="panel-heading">{{panelTitle}}</div>
   <div class="panel-body">
     <form [formGroup]="customerForm" (ngSubmit)="onSumbit()">
       <div class="form-group">
@@ -17,7 +17,7 @@
         <input type="email" class="form-control" id="email" placeholder="Email Address" formControlName="email">
       </div>
 
-      <button type="button" class="btn btn-primary" (click)="addContactNumberFormGroup()">Add Contact</button>
+      <button type="button" class="btn btn-primary" (click)="addContactNumberFormGroup(customerForm, '' , '')">Add Contact</button>
 
       <div formArrayName="contactNumbers">
         <div *ngFor="let c of customerForm.get('contactNumbers').controls; let i = index">
@@ -38,7 +38,10 @@
       </div>
 
       <button type="submit" class="btn btn-default" [disabled]="customerForm.invalid">Save</button>
-
+      <div *ngIf="customerForm.get('rev')">
+        <input type="hidden" [value]="customer._id" formControlName="id">
+        <input type="hidden" [value]="customer._rev" formControlName="rev">
+      </div>
     </form>
   </div>
 </div>
