@@ -1,0 +1,28 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">Customer List</div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let customer of customers">
+                <td>ID</td>
+                <td>{{ customer.value.firstName}}</td>
+                <td>{{ customer.value.lastName}}</td>
+                <td>{{ customer.value.email}}</td>
+                <td>
+                    <a class="btn btn-primary" [routerLink]="['customer', 'view', customer.id]">View</a>
+                    <button class="btn btn-primary" (click)="deleteCustomer(customer.id, customer.value._rev)">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

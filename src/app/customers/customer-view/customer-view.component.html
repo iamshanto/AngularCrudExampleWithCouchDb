@@ -1,0 +1,21 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">Create a Customer</div>
+  <div class="panel-body">
+    <table class="table table-striped" *ngIf="customer">
+      <tbody>
+      <tr><td width="25%">ID :</td><td>{{ customer._id }}</td></tr>
+      <tr><td>First Name : </td><td>{{ customer.firstName }}</td></tr>
+      <tr><td>Last Name : </td><td>{{ customer.lastName }}</td></tr>
+      <tr><td>Email : </td><td>{{ customer.email }}</td></tr>
+      <tr *ngIf="customer.contactNumbers && customer.contactNumbers.length">
+        <td>Contact Number</td>
+        <td>
+          <div *ngFor="let phone of customer.contactNumbers">
+            {{phone.number}} ({{phone.type}})
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

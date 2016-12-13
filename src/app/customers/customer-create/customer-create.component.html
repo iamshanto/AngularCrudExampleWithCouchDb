@@ -1,0 +1,24 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">Create a Customer</div>
+  <div class="panel-body">
+    <form [formGroup]="customerForm" (ngSubmit)="onSumbit()">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" placeholder="First Name" formControlName="firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Last Name" formControlName="lastName">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Email Address" formControlName="email">
+      </div>
+
+      <button type="submit" class="btn btn-default">Save</button>
+
+    </form>
+  </div>
+</div>
