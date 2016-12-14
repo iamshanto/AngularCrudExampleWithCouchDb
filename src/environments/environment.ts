@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   dbName: 'customers',
-  dbHostName: 'http://localhost:5984/'
+  dbHostName: 'http://192.168.1.101:5984/'
 };

@@ -35,10 +35,10 @@ export class DbService {
   }
 
   deleteById(id, rev){
-    let header = new Headers();
-    //header.set('Content-Type', 'application/x-www-form-urlencodeds');
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencodeds');
     return this._http.delete(this.endpoint + id + '?rev=' + rev, {
-      method: RequestMethod.Delete
+      headers: headers,
     }).map((response: Response) => response.json());
   }
 
