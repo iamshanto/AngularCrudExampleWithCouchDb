@@ -8,8 +8,7 @@ import {Router} from "@angular/router";
 })
 export class CustomersComponent implements OnInit {
 
-  customers;
-  subscription1;
+  customers = [];
 
   constructor(private _customerRepo: CustomerRepositoryService, private _router:Router) { }
 
@@ -18,26 +17,33 @@ export class CustomersComponent implements OnInit {
   }
 
   loadCustomers(){
-      this.subscription1 = this._customerRepo.getAll().subscribe(
+      this._customerRepo.getAll().then(
           data => {
-              this.customers = data.rows
+              this.customers = data.rows;
+              console.log(this.customers);
+              this.customers.forEach(function(v, i){
+                  console.log(v.doc.firstName);
+              });
           }
+      ).catch(
+        err => console.log(err)
       );
   }
 
-  deleteCustomer(id, rev){
-    this.subscription1 = this._customerRepo.deleteById(id, rev).subscribe(
-        data => {
-          if (data.ok) {
-              this.loadCustomers();
-          } else {
-            alert('Can not delete customer. (Reason: '+data.reason+')')
+  deleteCustomer(id){
+      this._customerRepo.getById(id).then(
+          data => {
+              console.log(data);
+              this._customerRepo.deleteDoc(data).then(
+                  dData => {
+                      console.log(dData);
+                      if (dData.ok) {
+                          this.loadCustomers();
+                      }
+                  }
+              ).catch(err => console.log(err));
           }
-        }
-    );
+      ).catch(err => console.log(err));
   }
 
-  ngOnDestroy(){
-    this.subscription1.unsubscribe();
-  }
 }

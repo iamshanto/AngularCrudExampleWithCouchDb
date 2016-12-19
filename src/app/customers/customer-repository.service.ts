@@ -14,8 +14,8 @@ export class CustomerRepositoryService {
     return this._dataService.getById(id);
   }
 
-  deleteById(id, rev){
-    return this._dataService.deleteById(id, rev);
+  deleteDoc(doc){
+    return this._dataService.deleteDoc(doc);
   }
 
   save(obj){

@@ -26,13 +26,8 @@ export class CustomerCreateComponent implements OnInit {
         data => {
           if (data['id']) {
             this.panelTitle = 'Edit Customer';
-
-            this.subscription3 = this._customerRepo.getById(data['id']).subscribe(
-                data2 => {
-                  this.customer = data2;
-                  this.customerForm = this.initCustomerForm();
-                }
-            )
+            this.customer = this._customerRepo.getById(data['id']);
+            this.customerForm = this.initCustomerForm();
           }
         }
     );
@@ -62,15 +57,7 @@ export class CustomerCreateComponent implements OnInit {
   }
 
   onSumbit(){
-    this.subscription1 = this._customerRepo.save(this.customerForm.value).subscribe(
-        (data:any) => {
-          if (data.ok){
-            this._router.navigate(['']);
-          } else {
-            alert(data.reason);
-          }
-        }
-    );
+    this._customerRepo.save(this.customerForm.value);
   }
 
   addContactNumberFormGroup(form:FormGroup, number, type){

@@ -13,14 +13,14 @@
             </thead>
             <tbody>
             <tr *ngFor="let customer of customers">
-                <td>ID</td>
-                <td>{{ customer.value.firstName}}</td>
-                <td>{{ customer.value.lastName}}</td>
-                <td>{{ customer.value.email}}</td>
+                <td>ID {{customer}}</td>
+                <td>{{ customer.doc.firstName}}</td>
+                <td>{{ customer.doc.lastName}}</td>
+                <td>{{ customer.doc.email}}</td>
                 <td>
-                    <a class="btn btn-primary" [routerLink]="['customer', 'view', customer.id]">View</a>
-                    <a class="btn btn-primary" [routerLink]="['customer', 'edit', customer.id]">Edit</a>
-                    <button class="btn btn-primary" (click)="deleteCustomer(customer.id, customer.value._rev)">Delete</button>
+                    <a class="btn btn-primary" [routerLink]="['customer', 'view', customer.doc._id]">View</a>
+                    <a class="btn btn-primary" [routerLink]="['customer', 'edit', customer.doc._id]">Edit</a>
+                    <button class="btn btn-primary" (click)="deleteCustomer(customer.doc._id, customer.doc._rev)">Delete</button>
                 </td>
             </tr>
             </tbody>

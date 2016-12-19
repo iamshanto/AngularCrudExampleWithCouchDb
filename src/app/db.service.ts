@@ -7,39 +7,43 @@ import 'rxjs/Rx';
 export class DbService {
 
   endpoint;
+  db;
+
   constructor(private _http: Http) {
+    this.db = new PouchDB('customers');
+
     this.endpoint = environment.dbHostName + environment.dbName + '/';
   }
 
   save(obj){
-    let url = this.endpoint;
+
     if (obj.id) {
-      url = url + obj.id + '?rev=' + obj.rev;
-      delete obj.id;
-      delete obj.rev;
-      return this._http.put(url, obj);
+      delete obj._id;
+      delete obj._rev;
     } else {
-      obj.id = this.guid();
-      return this._http.post(url, obj);
+      obj._id = this.guid();
     }
+
+    this.db.put(obj).then(function (response) {
+      console.log(response);
+    }).catch(function (err) {
+      console.log(err);
+    });
   }
 
   getAll(){
-    return this._http.get(this.endpoint + '_design/customers/_view/all')
-        .map((response: Response) => response.json());
+    return this.db.allDocs({
+      include_docs: true,
+      attachments: true
+    });
   }
 
   getById(id){
-    return this._http.get(this.endpoint + id)
-        .map((response: Response) => response.json());
+    return this.db.get(id);
   }
 
-  deleteById(id, rev){
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencodeds');
-    return this._http.delete(this.endpoint + id + '?rev=' + rev, {
-      headers: headers,
-    }).map((response: Response) => response.json());
+  deleteDoc(doc){
+    return this.db.remove(doc);
   }
 
   guid() {
