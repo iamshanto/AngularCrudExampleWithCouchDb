@@ -12,24 +12,40 @@ export class CustomerCreateComponent implements OnInit {
 
   customer;
   customerForm:FormGroup;
-  subscription1;
-  subscription2;
-  subscription3;
+  saveSubscription;
+  paramSubscription;
+  getByIdSubscription;
   panelTitle = 'Create a customer';
+
   constructor(private _customerRepo: CustomerRepositoryService, private _fb: FormBuilder, private _router: Router, private _activeRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.customerForm = this.initCustomerForm();
 
-    this.subscription2 = this._activeRoute.params.subscribe(
+    this.saveSubscription = this._customerRepo.saveEvent.subscribe(
+        data => {
+          if (data.ok) {
+            alert('Save Successfully');
+            this._router.navigate(['']);
+          }
+        }
+    );
+
+    this.paramSubscription = this._activeRoute.params.subscribe(
         data => {
           if (data['id']) {
             this.panelTitle = 'Edit Customer';
-            this.customer = this._customerRepo.getById(data['id']);
-            this.customerForm = this.initCustomerForm();
+            this._customerRepo.getById(data['id']);
           }
         }
+    );
+
+    this.getByIdSubscription = this._customerRepo.getByIdEvent.subscribe(
+      data => {
+          this.customer = data;
+          this.customerForm = this.initCustomerForm();
+      }
     );
   }
 
@@ -79,14 +95,14 @@ export class CustomerCreateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.subscription1) {
-      this.subscription1.unsubscribe();
+    if (this.paramSubscription) {
+      this.paramSubscription.unsubscribe();
     }
-    if (this.subscription2) {
-      this.subscription2.unsubscribe();
+    if (this.saveSubscription){
+      this.saveSubscription.unsubscribe();
     }
-    if (this.subscription3){
-      this.subscription3.unsubscribe();
+    if (this.getByIdSubscription){
+      this.getByIdSubscription.unsubscribe();
     }
   }
 }

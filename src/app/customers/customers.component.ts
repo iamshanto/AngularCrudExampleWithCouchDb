@@ -9,41 +9,37 @@ import {Router} from "@angular/router";
 export class CustomersComponent implements OnInit {
 
   customers = [];
+  customersSubscription;
+  customerDeleteSubscription;
 
   constructor(private _customerRepo: CustomerRepositoryService, private _router:Router) { }
 
   ngOnInit() {
-    this.loadCustomers();
+      this.customersSubscription = this._customerRepo.getAllEvent.subscribe(
+          data => {
+              this.customers = data.rows;
+          }
+      );
+      this.customerDeleteSubscription = this._customerRepo.delelteEvent.subscribe(
+          data => {
+              this.loadCustomers();
+          }
+      );
+
+      this.loadCustomers();
   }
 
   loadCustomers(){
-      this._customerRepo.getAll().then(
-          data => {
-              this.customers = data.rows;
-              console.log(this.customers);
-              this.customers.forEach(function(v, i){
-                  console.log(v.doc.firstName);
-              });
-          }
-      ).catch(
-        err => console.log(err)
-      );
+      this._customerRepo.getAll();
   }
 
   deleteCustomer(id){
-      this._customerRepo.getById(id).then(
-          data => {
-              console.log(data);
-              this._customerRepo.deleteDoc(data).then(
-                  dData => {
-                      console.log(dData);
-                      if (dData.ok) {
-                          this.loadCustomers();
-                      }
-                  }
-              ).catch(err => console.log(err));
-          }
-      ).catch(err => console.log(err));
+      this._customerRepo.deleteDoc(id);
+  }
+
+  ngOnDestroy(){
+      this.customersSubscription.unsubscribe();
+      this.customerDeleteSubscription.unsubscribe();
   }
 
 }

@@ -10,31 +10,29 @@ import {CustomerRepositoryService} from "../customer-repository.service";
 export class CustomerViewComponent implements OnInit {
 
   customer;
-  subscription1;
-  subscription2;
+  paramSubscription;
+  getByIdSubscription;
 
   constructor(private _customerRepo: CustomerRepositoryService, private _activeRoute: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    this.subscription1 = this._activeRoute.params.subscribe(
+    this.paramSubscription = this._activeRoute.params.subscribe(
         param => {
-          this.getCustomerById(param['id']);
+          this._customerRepo.getById(param['id']);
         }
     );
-  }
 
-  getCustomerById(id){
-    this.subscription2 = this._customerRepo.getById(id).subscribe(
+    this.getByIdSubscription = this._customerRepo.getByIdEvent.subscribe(
         data => {
-          this.customer = data;
+          this.customer = data
         }
     );
   }
 
   ngOnDestroy(){
-    this.subscription1.unsubscribe();
-    this.subscription2.unsubscribe();
+    this.paramSubscription.unsubscribe();
+    this.getByIdSubscription.unsubscribe();
   }
 }
